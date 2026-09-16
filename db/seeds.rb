@@ -1,6 +1,10 @@
-# 開発用のダミーデータ。
-# 6名の担当者(採用担当 兼 面接官)と、それぞれの予定(空いていない時間帯)を用意する。
+# 開発用のマスターデータ。
+# 6名の担当者(採用担当 兼 面接官)と、稼働時間帯の設定だけを用意する。
 # すべてパスワードは "password" 。
+#
+# 個人の予定(availabilities)や面接(interviews)はここでは自動生成しない。
+# デモ・動作確認用のデータは、アプリの画面(自分の予定 登録画面、日程検索画面)から
+# 自分で入力する運用にする。
 
 BusinessHour.current
 
@@ -13,7 +17,7 @@ USERS = [
   { name: "渡辺 愛",     email: "watanabe@example.com" }
 ].freeze
 
-users = USERS.map do |attrs|
+USERS.each do |attrs|
   User.find_or_create_by!(email: attrs[:email]) do |u|
     u.name = attrs[:name]
     u.password = "password"
@@ -21,36 +25,5 @@ users = USERS.map do |attrs|
   end
 end
 
-# 今日から2週間分、平日の午前・午後にランダムで「予定あり(空いていない)」を入れる
-users.each do |user|
-  (0..13).each do |offset|
-    date = Date.current + offset.days
-    next if date.saturday? || date.sunday?
-    next unless rand < 0.4 # 4割くらいの確率で予定を入れる
-
-    hour = [ 10, 11, 14, 15, 16, 17 ].sample
-    start_at = date.to_time.change(hour: hour)
-    end_at = start_at + 60.minutes
-
-    Availability.find_or_create_by!(user: user, start_at: start_at, end_at: end_at) do |a|
-      a.note = "既存の予定(ダミー)"
-    end
-  end
-end
-
-# デモ用に、確定済みの面接を1件だけ用意しておく(空の画面だと動作イメージが掴みにくいため)。
-demo_start = (Date.current + 3.days).to_time.change(hour: 10)
-demo_end = demo_start + BusinessHour.current.interview_duration_minutes.minutes
-demo_interviewer = users.find { |u| u.available_at?(demo_start, demo_end) } || users.first
-
-demo_candidate = Candidate.find_or_create_by!(name: "山田 太郎(デモ候補者)")
-Interview.find_or_create_by!(candidate: demo_candidate, scheduled_start_at: demo_start) do |interview|
-  interview.scheduled_end_at = demo_end
-  interview.status = "confirmed"
-  interview.created_by = users.first
-  interview.interview_assignments.build(user: demo_interviewer)
-end
-
 puts "ユーザーを#{User.count}件作成しました(全員パスワード: password)"
-puts "予定(availabilities)を#{Availability.count}件作成しました"
-puts "デモ用の面接を#{Interview.count}件作成しました"
+puts "稼働時間帯の設定: #{BusinessHour.current.start_time.strftime('%H:%M')}〜#{BusinessHour.current.end_time.strftime('%H:%M')}"
