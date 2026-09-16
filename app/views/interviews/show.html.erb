@@ -1,0 +1,18 @@
+<h1>予約詳細</h1>
+<p><%= link_to "← 予約一覧に戻る", interviews_path %></p>
+
+<table>
+  <tr><th>日時</th><td><%= @interview.scheduled_start_at.strftime("%Y/%m/%d %H:%M") %>〜<%= @interview.scheduled_end_at.strftime("%H:%M") %></td></tr>
+  <tr><th>候補者</th><td><%= @interview.candidate.name %></td></tr>
+  <tr><th>担当者</th><td><%= @interview.users.map(&:name).join("、") %></td></tr>
+  <tr><th>状態</th><td class="status-<%= @interview.status %>"><%= @interview.status == "confirmed" ? "確定" : "キャンセル" %></td></tr>
+  <tr><th>登録者</th><td><%= @interview.created_by.name %></td></tr>
+</table>
+
+<% if @interview.status == "confirmed" %>
+  <p>
+    <%= link_to "日程を変更する", edit_interview_path(@interview), class: "btn" %>
+    <%= button_to "キャンセルする", cancel_interview_path(@interview), method: :patch, class: "btn danger",
+          form: { onsubmit: "return confirm('本当にキャンセルしますか?')" } %>
+  </p>
+<% end %>

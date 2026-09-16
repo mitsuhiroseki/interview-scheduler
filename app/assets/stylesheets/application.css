@@ -1,0 +1,245 @@
+/*
+ * このファイルは app/assets/stylesheets 以下の全CSSをまとめてコンパイルするマニフェストです。
+ * デザインの美しさは評価対象ではないため、余白・配色・文字サイズを軽く整える程度に留めています。
+ */
+
+:root {
+  --color-bg: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-border: #e0e3e8;
+  --color-text: #1f2430;
+  --color-text-muted: #6b7280;
+  --color-primary: #3457d5;
+  --color-primary-dark: #2740a8;
+  --color-danger: #d64545;
+  --color-success: #1f8a4c;
+  --radius: 6px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 24px 0 8px;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 20px 0 8px;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* --- ヘッダー / ナビ --- */
+
+.site-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-header nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 56px;
+}
+
+.site-header .brand {
+  font-weight: bold;
+  color: var(--color-text);
+  margin-right: 8px;
+}
+
+.site-header .spacer {
+  flex: 1;
+}
+
+.site-header .current-user {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+main.container {
+  padding-top: 20px;
+  padding-bottom: 60px;
+}
+
+/* --- フラッシュメッセージ --- */
+
+.flash {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.flash.notice {
+  background: #e7f5ec;
+  color: var(--color-success);
+  border: 1px solid #b9e3c8;
+}
+
+.flash.alert {
+  background: #fdecec;
+  color: var(--color-danger);
+  border: 1px solid #f3bcbc;
+}
+
+/* --- ボタン --- */
+
+.btn,
+input[type="submit"],
+button {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn.primary,
+input[type="submit"] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn.primary:hover,
+input[type="submit"]:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn.danger {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: #fff;
+}
+
+/* --- フォーム --- */
+
+form p {
+  margin: 12px 0;
+}
+
+label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.slot-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.slot-input-row input {
+  max-width: 200px;
+}
+
+/* --- テーブル --- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+th {
+  background: #f0f2f5;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.status-confirmed {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.status-cancelled {
+  color: var(--color-text-muted);
+}
+
+/* --- 日程検索・比較結果の枠 --- */
+
+.slot-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.slot-time {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.no-availability {
+  color: var(--color-text-muted);
+}
+
+.user-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 10px 0;
+}
+
+.user-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}

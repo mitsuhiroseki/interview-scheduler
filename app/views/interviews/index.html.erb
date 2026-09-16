@@ -1,0 +1,29 @@
+<h1>予約一覧</h1>
+<p>全担当者の予約(声かけ・確定分)を確認できます。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>日時</th>
+      <th>候補者</th>
+      <th>担当者</th>
+      <th>状態</th>
+      <th>登録者</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @interviews.each do |interview| %>
+      <tr>
+        <td><%= interview.scheduled_start_at.strftime("%Y/%m/%d %H:%M") %>〜<%= interview.scheduled_end_at.strftime("%H:%M") %></td>
+        <td><%= interview.candidate.name %></td>
+        <td><%= interview.users.map(&:name).join("、") %></td>
+        <td class="status-<%= interview.status %>"><%= interview.status == "confirmed" ? "確定" : "キャンセル" %></td>
+        <td><%= interview.created_by.name %></td>
+        <td>
+          <%= link_to "詳細", interview_path(interview) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

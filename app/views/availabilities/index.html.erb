@@ -1,0 +1,29 @@
+<h1>自分の予定</h1>
+<p>ここに登録した時間帯は「予定あり(空いていない)」として扱われ、カレンダー画面の空き判定に使われます。</p>
+
+<p><%= link_to "予定を追加する", new_availability_path, class: "btn primary" %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>開始</th>
+      <th>終了</th>
+      <th>メモ</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @availabilities.each do |a| %>
+      <tr>
+        <td><%= a.start_at.strftime("%Y/%m/%d %H:%M") %></td>
+        <td><%= a.end_at.strftime("%Y/%m/%d %H:%M") %></td>
+        <td><%= a.note %></td>
+        <td>
+          <%= link_to "編集", edit_availability_path(a) %>
+          <%= button_to "削除", availability_path(a), method: :delete, class: "btn danger",
+                form: { onsubmit: "return confirm('削除しますか?')" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

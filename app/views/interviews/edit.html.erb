@@ -1,0 +1,15 @@
+<h1>日程変更</h1>
+<p><%= link_to "← 詳細に戻る", interview_path(@interview) %></p>
+
+<p>
+  現在の日時: <%= @interview.scheduled_start_at.strftime("%Y/%m/%d %H:%M") %>〜<%= @interview.scheduled_end_at.strftime("%H:%M") %><br>
+  担当者: <%= @interview.users.map(&:name).join("、") %>(担当者は変更できません。時間の変更のみ対応しています)
+</p>
+
+<%= form_with model: @interview, url: interview_path(@interview), method: :patch do |f| %>
+  <p>
+    <%= f.label :scheduled_start_at, "新しい開始日時(面接時間は#{BusinessHour.current.interview_duration_minutes}分のまま)" %><br>
+    <%= f.datetime_field :scheduled_start_at, value: @interview.scheduled_start_at.strftime("%Y-%m-%dT%H:%M") %>
+  </p>
+  <p><%= f.submit "変更する", class: "btn primary" %></p>
+<% end %>

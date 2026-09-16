@@ -1,0 +1,57 @@
+<h1>面接日程の検索</h1>
+
+<% if @results.blank? %>
+  <p>候補者からもらった希望日時(3〜5件)を入力すると、それぞれの日時について対応できる担当者が分かります。</p>
+
+  <%= form_with url: new_schedule_path, method: :get, local: true do %>
+    <p>
+      <%= label_tag "candidate_name", "候補者名(メモ)" %><br>
+      <%= text_field_tag "candidate_name", @candidate_name, placeholder: "例: 山田さん(エンジニア職)" %>
+    </p>
+
+    <p>候補日時(分かる分だけ入力してください)</p>
+    <% (0...SchedulingController::SLOT_INPUT_COUNT).each do |i| %>
+      <div class="slot-input-row">
+        <%= date_field_tag "requested_dates[]", @requested_dates&.[](i) %>
+        <%= time_field_tag "requested_times[]", @requested_times&.[](i) %>
+      </div>
+    <% end %>
+
+    <p><%= submit_tag "空き状況を確認する", class: "btn primary" %></p>
+  <% end %>
+<% else %>
+  <h2><%= @candidate_name %> さんの候補日時ごとの空き状況</h2>
+  <p><%= link_to "← 条件を変えて検索し直す", new_schedule_path %></p>
+
+  <% @results.each do |slot| %>
+    <div class="slot-card">
+      <div class="slot-time">
+        <%= slot[:start_at].strftime("%Y年%m月%d日 (%a) %H:%M") %> 〜 <%= slot[:end_at].strftime("%H:%M") %>
+      </div>
+
+      <% if slot[:available_users].empty? %>
+        <p class="no-availability">対応できる担当者がいません</p>
+      <% else %>
+        <%= form_with url: interviews_path, method: :post do %>
+          <%= hidden_field_tag "candidate_name", @candidate_name %>
+          <% @requested_dates.each do |d| %>
+            <%= hidden_field_tag "requested_dates[]", d %>
+          <% end %>
+          <% @requested_times.each do |t| %>
+            <%= hidden_field_tag "requested_times[]", t %>
+          <% end %>
+          <%= hidden_field_tag "interview[scheduled_start_at]", slot[:start_at].iso8601 %>
+          <%= hidden_field_tag "interview[scheduled_end_at]", slot[:end_at].iso8601 %>
+
+          <div class="user-checkboxes">
+            <% slot[:available_users].each do |user| %>
+              <label><%= check_box_tag "interview[user_ids][]", user.id %> <%= user.name %></label>
+            <% end %>
+          </div>
+
+          <p><%= submit_tag "この日時で確定する", class: "btn primary" %></p>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

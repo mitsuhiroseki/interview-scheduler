@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "面接日程調整アプリ" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%= stylesheet_link_tag :app %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <% if logged_in? %>
+      <header class="site-header">
+        <nav class="container">
+          <%= link_to "面接日程調整", new_schedule_path, class: "brand" %>
+          <%= link_to "日程を検索", new_schedule_path %>
+          <%= link_to "予約一覧", interviews_path %>
+          <%= link_to "自分の予定", availabilities_path %>
+          <span class="spacer"></span>
+          <span class="current-user"><%= current_user.name %>さん</span>
+          <%= button_to "ログアウト", logout_path, method: :delete, class: "btn" %>
+        </nav>
+      </header>
+    <% end %>
+
+    <main class="container">
+      <% if notice %>
+        <p class="flash notice"><%= notice %></p>
+      <% end %>
+      <% if alert %>
+        <p class="flash alert"><%= alert %></p>
+      <% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

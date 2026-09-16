@@ -1,0 +1,25 @@
+<%= form_with model: availability do |f| %>
+  <% if availability.errors.any? %>
+    <div class="flash alert">
+      <ul>
+        <% availability.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :start_at, "開始日時" %><br>
+    <%= f.datetime_field :start_at %>
+  </p>
+  <p>
+    <%= f.label :end_at, "終了日時" %><br>
+    <%= f.datetime_field :end_at %>
+  </p>
+  <p>
+    <%= f.label :note, "メモ(任意)" %><br>
+    <%= f.text_field :note %>
+  </p>
+  <p><%= f.submit "保存", class: "btn primary" %></p>
+<% end %>
